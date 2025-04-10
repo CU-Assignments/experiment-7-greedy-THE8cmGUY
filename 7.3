@@ -1,0 +1,17 @@
+import heapq
+from typing import List
+
+class Solution:
+    def minStoneSum(self, piles: List[int], k: int) -> int:
+        # Convert to a max heap (by storing negative values)
+        max_heap = [-pile for pile in piles]
+        heapq.heapify(max_heap)
+        
+        # Apply the operation k times
+        for _ in range(k):
+            max_pile = -heapq.heappop(max_heap)  # Extract max element
+            reduced_pile = max_pile - (max_pile // 2)  # Remove floor(pile / 2) stones
+            heapq.heappush(max_heap, -reduced_pile)  # Push the updated pile back
+        
+        # Calculate the sum of remaining stones
+        return -sum(max_heap)
